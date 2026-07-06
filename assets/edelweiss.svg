@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Edelweiß</title>
+  <desc id="desc">Stilisierte Edelweiß-Blume</desc>
+  <defs>
+    <linearGradient id="petal" x1="18" x2="110" y1="16" y2="112" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e8f1ea"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="28" x2="98" y1="98" y2="30" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3f7156"/>
+      <stop offset="1" stop-color="#82a98c"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#leaf)" d="M63.8 74.8c-11.5 6.8-25.5 9-39.7 4.2 6.7 12 17.4 21 31.6 25 2.7-10.5 5.5-20.2 8.1-29.2Zm1.9-.1c10.9 7.6 24.9 11 39.4 7.1-7.4 11.5-18.7 19.8-33.1 22.8-2.1-10.7-4.2-20.6-6.3-29.9Z" opacity=".92"/>
+  <g stroke="#d6e4da" stroke-width="2.5" stroke-linejoin="round">
+    <path fill="url(#petal)" d="M64 12c7.5 13.5 8.2 26.1 0 38-8.2-11.9-7.5-24.5 0-38Z"/>
+    <path fill="url(#petal)" d="M99.9 23.9c-1.8 15.3-8.6 25.9-21.5 31 1.5-14.3 8.9-24.4 21.5-31Z"/>
+    <path fill="url(#petal)" d="M116 61.2c-12.4 9.1-24.8 11.2-37.4 5.1 10.8-9.6 23.1-11.1 37.4-5.1Z"/>
+    <path fill="url(#petal)" d="M95.8 105.1c-14.9-3.7-24.5-11.8-28-25.2 13.9 3.3 23.1 11.9 28 25.2Z"/>
+    <path fill="url(#petal)" d="M32.2 105.1c4.9-13.3 14.1-21.9 28-25.2-3.5 13.4-13.1 21.5-28 25.2Z"/>
+    <path fill="url(#petal)" d="M12 61.2c14.3-6 26.6-4.5 37.4 5.1-12.6 6.1-25 4-37.4-5.1Z"/>
+    <path fill="url(#petal)" d="M28.1 23.9c12.6 6.6 20 16.7 21.5 31-12.9-5.1-19.7-15.7-21.5-31Z"/>
+  </g>
+  <circle cx="64" cy="64" r="19" fill="#f4d27a"/>
+  <circle cx="64" cy="64" r="10" fill="#d7a84f"/>
+  <g fill="#fff7d6" opacity=".88">
+    <circle cx="58" cy="58" r="3.4"/>
+    <circle cx="70" cy="58" r="3.4"/>
+    <circle cx="57" cy="70" r="3.4"/>
+    <circle cx="71" cy="70" r="3.4"/>
+    <circle cx="64" cy="64" r="3.6"/>
+  </g>
+</svg>

@@ -1,0 +1,113 @@
+{
+  "site": {
+    "brand": "Edelweisschen",
+    "title": "Streamplan",
+    "eyebrow": "Edelweisschen",
+    "weekLabel": "06.07.2026 bis 12.07.2026",
+    "emptyText": "TBA – to be announced",
+    "socialLinks": [
+      {
+        "label": "Twitch",
+        "url": "https://www.twitch.tv/edelweisschen"
+      },
+      {
+        "label": "Instagram",
+        "url": "https://www.instagram.com/"
+      },
+      {
+        "label": "Discord",
+        "url": "https://discord.com/"
+      }
+    ]
+  },
+  "schedule": [
+    {
+      "day": "Montag",
+      "dateLabel": "06.07.2026",
+      "streams": [
+        {
+          "time": "TBA",
+          "title": "Split Fiction mit Kalle",
+          "categories": [
+            "Split Fiction"
+          ],
+          "note": "Co-op-Stream. Die genaue Uhrzeit wird noch angekündigt.",
+          "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/1354355809_IGDB-285x380.jpg",
+          "coverAlt": "Twitch Game Cover zu Split Fiction"
+        }
+      ]
+    },
+    {
+      "day": "Dienstag",
+      "dateLabel": "07.07.2026",
+      "streams": [
+        {
+          "time": "TBA",
+          "title": "TBA",
+          "categories": [],
+          "note": "to be announced"
+        }
+      ]
+    },
+    {
+      "day": "Mittwoch",
+      "dateLabel": "08.07.2026",
+      "streams": [
+        {
+          "time": "TBA",
+          "title": "TBA",
+          "categories": [],
+          "note": "to be announced"
+        }
+      ]
+    },
+    {
+      "day": "Donnerstag",
+      "dateLabel": "09.07.2026",
+      "streams": [
+        {
+          "time": "TBA",
+          "title": "TBA",
+          "categories": [],
+          "note": "to be announced"
+        }
+      ]
+    },
+    {
+      "day": "Freitag",
+      "dateLabel": "10.07.2026",
+      "streams": [
+        {
+          "time": "TBA",
+          "title": "TBA",
+          "categories": [],
+          "note": "to be announced"
+        }
+      ]
+    },
+    {
+      "day": "Samstag",
+      "dateLabel": "11.07.2026",
+      "streams": [
+        {
+          "time": "",
+          "title": "Off-Day",
+          "categories": [],
+          "note": "Heute ist kein Stream geplant."
+        }
+      ]
+    },
+    {
+      "day": "Sonntag",
+      "dateLabel": "12.07.2026",
+      "streams": [
+        {
+          "time": "TBA",
+          "title": "TBA",
+          "categories": [],
+          "note": "to be announced"
+        }
+      ]
+    }
+  ]
+}
