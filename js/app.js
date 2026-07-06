@@ -403,6 +403,43 @@ function renderSocialLinks(site) {
   if (footerWrap) footerWrap.hidden = footer.children.length === 0;
 }
 
+function getTwitchUrl(site) {
+  const links = Array.isArray(site?.socialLinks) ? site.socialLinks : [];
+  const twitchLink = links.find((link) => /twitch/i.test(`${link?.label || ""} ${link?.url || ""}`));
+  return getSafeWebUrl(twitchLink?.url) || "https://www.twitch.tv/edelweisschen";
+}
+
+function parseDateLabel(value) {
+  const match = String(value || "").trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{2}|\d{4})$/);
+  if (!match) return null;
+
+  const day = Number(match[1]);
+  const month = Number(match[2]);
+  const year = match[3].length === 2 ? 2000 + Number(match[3]) : Number(match[3]);
+  const parsed = new Date(year, month - 1, day);
+
+  if (parsed.getFullYear() !== year || parsed.getMonth() !== month - 1 || parsed.getDate() !== day) return null;
+  parsed.setHours(0, 0, 0, 0);
+  return parsed;
+}
+
+function isSameCalendarDate(left, right) {
+  return left.getFullYear() === right.getFullYear()
+    && left.getMonth() === right.getMonth()
+    && left.getDate() === right.getDate();
+}
+
+function isTodayScheduleDay(day, index) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const parsedDate = parseDateLabel(getDayDateLabel(day, index));
+  if (parsedDate) return isSameCalendarDate(parsedDate, today);
+
+  const currentDayIndex = today.getDay() === 0 ? 6 : today.getDay() - 1;
+  return dayOrder[currentDayIndex] === day.day;
+}
+
 function isTbaValue(value) {
   return String(value || "").trim().toLowerCase() === "tba";
 }
@@ -477,8 +514,22 @@ function createStreamEntry(stream) {
   return article;
 }
 
-function createDayCard(day, index, emptyText) {
-  const section = createElement("section", "day-card");
+function createDayCard(day, index, emptyText, liveUrl = "") {
+  const isToday = isTodayScheduleDay(day, index);
+  const isLiveLink = Boolean(liveUrl);
+  const section = createElement(isLiveLink ? "a" : "section", "day-card");
+
+  section.classList.toggle("is-today", isToday);
+  section.classList.toggle("day-card--live-link", isLiveLink);
+
+  if (isLiveLink) {
+    section.href = liveUrl;
+    section.target = "_blank";
+    section.rel = "noopener noreferrer";
+    section.title = "Livestream von Edelweisschen auf Twitch öffnen";
+    section.setAttribute("aria-label", `${day.day} öffnen: Edelweisschen ist live auf Twitch`);
+  }
+
   const header = createElement("header", "day-card__head");
   const title = createElement("h2", "", day.day);
   const date = createElement("span", "day-card__date", getDayDateLabel(day, index));
@@ -497,8 +548,11 @@ function renderSchedule(plan) {
   const scheduleList = document.querySelector("#scheduleList");
   if (!scheduleList) return;
 
+  const status = normalizeStreamStatus(plan.site.streamStatus);
+  const liveUrl = status.status === "online" ? getTwitchUrl(plan.site) : "";
+
   scheduleList.replaceChildren();
-  plan.schedule.forEach((day, index) => scheduleList.append(createDayCard(day, index, plan.site.emptyText)));
+  plan.schedule.forEach((day, index) => scheduleList.append(createDayCard(day, index, plan.site.emptyText, liveUrl)));
 }
 
 function getPreferredTheme() {

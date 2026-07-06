@@ -1068,3 +1068,82 @@ html[data-theme="dark"] .stream-status {
     padding: 7px 11px 7px 10px;
   }
 }
+
+/* Aktueller Tag + Live-Verlinkung */
+.day-card {
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease, background 180ms ease;
+}
+
+.day-card--live-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.day-card--live-link:hover {
+  border-color: rgba(95, 129, 87, 0.42);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(95, 129, 87, 0.18), 0 0 22px rgba(95, 129, 87, 0.14);
+  transform: translateY(-1px);
+}
+
+.day-card--live-link:focus-visible {
+  outline: 3px solid rgba(95, 129, 87, 0.32);
+  outline-offset: 4px;
+}
+
+.day-card.is-today {
+  border-color: rgba(95, 129, 87, 0.52);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(95, 129, 87, 0.17), 0 0 28px rgba(95, 129, 87, 0.22);
+}
+
+.day-card.is-today::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(185, 216, 142, 0.20), transparent 38%, rgba(216, 191, 110, 0.10));
+  opacity: 0.75;
+}
+
+.day-card.is-today .day-card__head,
+html[data-view="list"] .day-card.is-today .day-card__head {
+  background: linear-gradient(135deg, rgba(127, 158, 113, 0.24), rgba(216, 191, 110, 0.10));
+}
+
+.day-card.is-today .day-card__head h2,
+.day-card.is-today .stream__time {
+  color: var(--accent-strong);
+}
+
+html[data-theme="dark"] .day-card--live-link:hover {
+  border-color: rgba(185, 216, 142, 0.38);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(185, 216, 142, 0.15), 0 0 24px rgba(185, 216, 142, 0.13);
+}
+
+html[data-theme="dark"] .day-card.is-today {
+  border-color: rgba(185, 216, 142, 0.44);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(185, 216, 142, 0.15), 0 0 30px rgba(185, 216, 142, 0.16);
+}
+
+html[data-theme="dark"] .day-card.is-today::before {
+  background: linear-gradient(90deg, rgba(185, 216, 142, 0.12), transparent 42%, rgba(224, 194, 108, 0.09));
+}
+
+html[data-theme="dark"] .day-card.is-today .day-card__head,
+html[data-theme="dark"][data-view="list"] .day-card.is-today .day-card__head {
+  background: linear-gradient(135deg, rgba(185, 216, 142, 0.16), rgba(224, 194, 108, 0.08));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .day-card.is-today {
+    animation: todayGlow 3.6s ease-in-out infinite;
+  }
+}
+
+@keyframes todayGlow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.035); }
+}
