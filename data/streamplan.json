@@ -5,6 +5,12 @@
     "eyebrow": "Edelweisschen",
     "weekLabel": "06.07.2026 bis 12.07.2026",
     "emptyText": "TBA – to be announced",
+    "streamStatus": {
+      "status": "offline",
+      "label": "Livestream",
+      "onlineText": "gerade live",
+      "offlineText": "gerade offline"
+    },
     "socialLinks": [
       {
         "label": "Linktree - Twitch, Discord, Instagram...",
@@ -19,10 +25,11 @@
       "streams": [
         {
           "time": "",
-          "title": "Kein Stream",
+          "title": "Off-Day",
           "categories": [],
           "note": "Stream fällt heute aus.",
           "coverUrl": "",
+          "coverFallbackUrl": "",
           "coverAlt": ""
         }
       ]
@@ -35,7 +42,10 @@
           "time": "TBA",
           "title": "TBA",
           "categories": [],
-          "note": "to be announced"
+          "note": "to be announced",
+          "coverUrl": "",
+          "coverFallbackUrl": "",
+          "coverAlt": ""
         }
       ]
     },
@@ -47,7 +57,10 @@
           "time": "TBA",
           "title": "TBA",
           "categories": [],
-          "note": "to be announced"
+          "note": "to be announced",
+          "coverUrl": "",
+          "coverFallbackUrl": "",
+          "coverAlt": ""
         }
       ]
     },
@@ -59,7 +72,10 @@
           "time": "TBA",
           "title": "TBA",
           "categories": [],
-          "note": "to be announced"
+          "note": "to be announced",
+          "coverUrl": "",
+          "coverFallbackUrl": "",
+          "coverAlt": ""
         }
       ]
     },
@@ -71,7 +87,10 @@
           "time": "TBA",
           "title": "TBA",
           "categories": [],
-          "note": "to be announced"
+          "note": "to be announced",
+          "coverUrl": "",
+          "coverFallbackUrl": "",
+          "coverAlt": ""
         }
       ]
     },
@@ -83,7 +102,10 @@
           "time": "",
           "title": "Off-Day",
           "categories": [],
-          "note": "Heute ist kein Stream geplant."
+          "note": "Heute ist kein Stream geplant.",
+          "coverUrl": "",
+          "coverFallbackUrl": "",
+          "coverAlt": ""
         }
       ]
     },
@@ -95,7 +117,10 @@
           "time": "TBA",
           "title": "TBA",
           "categories": [],
-          "note": "to be announced"
+          "note": "to be announced",
+          "coverUrl": "",
+          "coverFallbackUrl": "",
+          "coverAlt": ""
         }
       ]
     }
