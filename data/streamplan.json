@@ -7,16 +7,8 @@
     "emptyText": "TBA – to be announced",
     "socialLinks": [
       {
-        "label": "Twitch",
-        "url": "https://www.twitch.tv/edelweisschen"
-      },
-      {
-        "label": "Instagram",
-        "url": "https://www.instagram.com/"
-      },
-      {
-        "label": "Discord",
-        "url": "https://discord.com/"
+        "label": "Linktree - Twitch, Discord, Instagram...",
+        "url": "https://linktr.ee/edelweisschen"
       }
     ]
   },
@@ -26,14 +18,12 @@
       "dateLabel": "06.07.2026",
       "streams": [
         {
-          "time": "TBA",
-          "title": "Split Fiction mit Kalle",
-          "categories": [
-            "Split Fiction"
-          ],
-          "note": "Co-op-Stream. Die genaue Uhrzeit wird noch angekündigt.",
-          "coverUrl": "https://static-cdn.jtvnw.net/ttv-boxart/1354355809_IGDB-285x380.jpg",
-          "coverAlt": "Twitch Game Cover zu Split Fiction"
+          "time": "",
+          "title": "Kein Stream",
+          "categories": [],
+          "note": "Stream fällt heute aus.",
+          "coverUrl": "",
+          "coverAlt": ""
         }
       ]
     },
