@@ -121,6 +121,8 @@ const DEFAULT_PLAN = {
 const dayOrder = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
 const themeStorageKey = "edelweisschen-streamplan-theme";
 const viewStorageKey = "edelweisschen-streamplan-view";
+const remoteRefreshMs = 60000;
+let remoteRefreshTimer = null;
 const SVG_NS = "http://www.w3.org/2000/svg";
 const edelweissPetals = [
   "M32 5.5c4.4 7.7 4.8 15 0 21.8-4.8-6.8-4.4-14.1 0-21.8Z",
@@ -341,15 +343,24 @@ function resolveImageUrl(value) {
   }
 }
 
+function canLoadRemotePlan() {
+  return window.location.protocol !== "file:" && window.location.protocol !== "content:";
+}
+
+async function fetchRemotePlan() {
+  const cacheBuster = `?updated=${Date.now()}`;
+  const response = await fetch(`./data/streamplan.json${cacheBuster}`, { cache: "no-store" });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return normalizePlan(await response.json());
+}
+
 async function loadPlan() {
-  if (window.location.protocol === "file:" || window.location.protocol === "content:") {
+  if (!canLoadRemotePlan()) {
     return normalizePlan(clone(DEFAULT_PLAN));
   }
 
   try {
-    const response = await fetch("./data/streamplan.json", { cache: "no-store" });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return normalizePlan(await response.json());
+    return await fetchRemotePlan();
   } catch (error) {
     console.warn("Streamplan konnte nicht aus data/streamplan.json geladen werden. Fallback wird verwendet.", error);
     return normalizePlan(clone(DEFAULT_PLAN));
@@ -624,14 +635,32 @@ function initViewToggle() {
   });
 }
 
-async function init() {
-  initThemeToggle();
-  initViewToggle();
-  const plan = await loadPlan();
+function renderPlan(plan) {
   renderHero(plan.site);
   renderStreamStatus(plan.site);
   renderSchedule(plan);
   renderSocialLinks(plan.site);
+}
+
+function initRemoteRefresh() {
+  if (!canLoadRemotePlan() || remoteRefreshTimer) return;
+
+  remoteRefreshTimer = window.setInterval(async () => {
+    try {
+      const plan = await fetchRemotePlan();
+      renderPlan(plan);
+    } catch (error) {
+      console.warn("Streamplan konnte während der geöffneten Seite nicht aktualisiert werden.", error);
+    }
+  }, remoteRefreshMs);
+}
+
+async function init() {
+  initThemeToggle();
+  initViewToggle();
+  const plan = await loadPlan();
+  renderPlan(plan);
+  initRemoteRefresh();
 }
 
 document.addEventListener("DOMContentLoaded", init);
