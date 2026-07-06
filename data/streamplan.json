@@ -5,12 +5,6 @@
     "eyebrow": "Edelweisschen",
     "weekLabel": "06.07.2026 bis 12.07.2026",
     "emptyText": "TBA – to be announced",
-    "streamStatus": {
-      "status": "offline",
-      "label": "Livestream",
-      "onlineText": "gerade live",
-      "offlineText": "gerade offline"
-    },
     "socialLinks": [
       {
         "label": "Linktree - Twitch, Discord, Instagram...",
