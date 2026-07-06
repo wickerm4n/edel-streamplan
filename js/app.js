@@ -505,10 +505,10 @@ function renderSocialLinks(site) {
   if (footerWrap) footerWrap.hidden = footer.children.length === 0;
 }
 
-function getTwitchUrl(site) {
-  const links = Array.isArray(site?.socialLinks) ? site.socialLinks : [];
-  const twitchLink = links.find((link) => /twitch/i.test(`${link?.label || ""} ${link?.url || ""}`));
-  return getSafeWebUrl(twitchLink?.url) || liveStatusConfig.url;
+function getTwitchUrl() {
+  // Live-Kacheln sollen immer direkt den offiziellen Twitch-Kanal öffnen
+  // und nicht versehentlich einen frei konfigurierten Social-/Linktree-Link verwenden.
+  return liveStatusConfig.url;
 }
 
 function parseDateLabel(value) {
@@ -651,7 +651,7 @@ function renderSchedule(plan) {
   if (!scheduleList) return;
 
   const status = normalizeStreamStatus(currentStreamStatus);
-  const liveUrl = status.status === "online" ? getTwitchUrl(plan.site) : "";
+  const liveUrl = status.status === "online" ? getTwitchUrl() : "";
 
   scheduleList.replaceChildren();
   plan.schedule.forEach((day, index) => scheduleList.append(createDayCard(day, index, plan.site.emptyText, liveUrl)));
