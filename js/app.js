@@ -472,11 +472,18 @@ function applyTheme(theme) {
   const safeTheme = theme === "dark" ? "dark" : "light";
   document.documentElement.dataset.theme = safeTheme;
   document.querySelector("meta[name='theme-color']")?.setAttribute("content", safeTheme === "dark" ? "#111711" : "#eef5ea");
+
   const toggle = document.querySelector("#themeToggle");
+  const lightLabel = document.querySelector("#themeLightLabel");
+  const darkLabel = document.querySelector("#themeDarkLabel");
+
   if (toggle) {
     toggle.setAttribute("aria-pressed", safeTheme === "dark" ? "true" : "false");
-    toggle.setAttribute("aria-label", safeTheme === "dark" ? "Light Mode aktivieren" : "Dark Mode aktivieren");
+    toggle.setAttribute("aria-label", safeTheme === "dark" ? "Helles Design aktivieren" : "Dunkles Design aktivieren");
   }
+
+  lightLabel?.classList.toggle("is-active", safeTheme === "light");
+  darkLabel?.classList.toggle("is-active", safeTheme === "dark");
 }
 
 function initThemeToggle() {
@@ -505,7 +512,7 @@ function applyViewMode(mode) {
 
   if (toggle) {
     toggle.setAttribute("aria-pressed", safeMode === "cards" ? "true" : "false");
-    toggle.setAttribute("aria-label", safeMode === "cards" ? "Listenansicht aktivieren" : "Cards-Ansicht aktivieren");
+    toggle.setAttribute("aria-label", safeMode === "cards" ? "Listenansicht aktivieren" : "Kachelansicht aktivieren");
   }
 
   listLabel?.classList.toggle("is-active", safeMode === "list");

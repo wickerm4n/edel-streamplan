@@ -6,15 +6,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#eef5ea" />
   <title>Edelweisschen · Streamplan</title>
-  <link rel="stylesheet" href="./css/styles.css?v=20260706c" />
+  <link rel="stylesheet" href="./css/styles.css?v=20260706d" />
 </head>
 <body>
   <div class="page">
     <header class="hero" aria-labelledby="page-title">
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Dark Mode aktivieren" aria-pressed="false">
-        <span class="theme-toggle__track" aria-hidden="true"></span>
-        <span class="theme-toggle__knob" aria-hidden="true"></span>
-      </button>
+      <div class="top-controls" aria-label="Darstellung der Seite">
+        <div class="switch-control switch-control--view" aria-label="Streamplan-Ansicht wählen">
+          <span class="switch-control__title">Plan</span>
+          <span class="switch-control__choice is-active" id="viewListLabel">Liste</span>
+          <button class="switch-control__switch view-toggle__switch" id="viewModeToggle" type="button" aria-label="Kachelansicht aktivieren" aria-pressed="false">
+            <span class="switch-control__knob view-toggle__knob" aria-hidden="true"></span>
+          </button>
+          <span class="switch-control__choice" id="viewCardsLabel">Kacheln</span>
+        </div>
+
+        <div class="switch-control switch-control--theme" aria-label="Design wählen">
+          <span class="switch-control__title">Design</span>
+          <span class="switch-control__choice is-active" id="themeLightLabel">Hell</span>
+          <button class="switch-control__switch theme-toggle" id="themeToggle" type="button" aria-label="Dunkles Design aktivieren" aria-pressed="false">
+            <span class="switch-control__knob theme-toggle__knob" aria-hidden="true"></span>
+          </button>
+          <span class="switch-control__choice" id="themeDarkLabel">Dunkel</span>
+        </div>
+      </div>
 
       <svg class="edelweiss hero-flower" viewBox="0 0 64 64" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
         <path class="edelweiss-leaf" d="M31.5 39.5c-6.4 4-14.1 5.2-21.4 2.8 3.6 6.3 9.6 10.9 17.2 12.9 1.4-5.6 2.8-10.7 4.2-15.7Zm2.2.1c6.1 4.2 13.8 5.9 21.2 3.8-4 6-10.4 10.4-18 12-1-5.7-2.1-10.9-3.2-15.8Z" />
@@ -35,22 +50,18 @@
       <h1 id="page-title">Streamplan</h1>
       <p class="week-pill" id="weekRange"><span>06.07.2026 bis 12.07.2026</span></p>
 
-      <div class="view-toggle" aria-label="Ansicht des Streamplans umschalten">
-        <span class="view-toggle__label is-active" id="viewListLabel">Liste</span>
-        <button class="view-toggle__switch" id="viewModeToggle" type="button" aria-label="Cards-Ansicht aktivieren" aria-pressed="false">
-          <span class="view-toggle__knob" aria-hidden="true"></span>
-        </button>
-        <span class="view-toggle__label" id="viewCardsLabel">Cards</span>
-      </div>
     </header>
 
     <main class="schedule" id="scheduleList" aria-labelledby="page-title">
       <p class="empty-day">Streamplan wird geladen.</p>
     </main>
 
-    <footer class="footer" id="socialLinks"></footer>
+    <footer class="footer" aria-label="Öffentliche Links">
+      <span class="footer__label">Online</span>
+      <nav class="footer__links" id="socialLinks"></nav>
+    </footer>
   </div>
 
-  <script src="./js/app.js?v=20260706c" defer></script>
+  <script src="./js/app.js?v=20260706d" defer></script>
 </body>
 </html>
