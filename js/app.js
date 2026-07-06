@@ -114,6 +114,7 @@ const DEFAULT_PLAN = {
 
 const dayOrder = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
 const themeStorageKey = "edelweisschen-streamplan-theme";
+const viewStorageKey = "edelweisschen-streamplan-view";
 const SVG_NS = "http://www.w3.org/2000/svg";
 const edelweissPetals = [
   "M32 5.5c4.4 7.7 4.8 15 0 21.8-4.8-6.8-4.4-14.1 0-21.8Z",
@@ -489,8 +490,43 @@ function initThemeToggle() {
   });
 }
 
+function getPreferredViewMode() {
+  const stored = safeGetStorage(viewStorageKey);
+  return stored === "cards" ? "cards" : "list";
+}
+
+function applyViewMode(mode) {
+  const safeMode = mode === "cards" ? "cards" : "list";
+  document.documentElement.dataset.view = safeMode;
+
+  const toggle = document.querySelector("#viewModeToggle");
+  const listLabel = document.querySelector("#viewListLabel");
+  const cardsLabel = document.querySelector("#viewCardsLabel");
+
+  if (toggle) {
+    toggle.setAttribute("aria-pressed", safeMode === "cards" ? "true" : "false");
+    toggle.setAttribute("aria-label", safeMode === "cards" ? "Listenansicht aktivieren" : "Cards-Ansicht aktivieren");
+  }
+
+  listLabel?.classList.toggle("is-active", safeMode === "list");
+  cardsLabel?.classList.toggle("is-active", safeMode === "cards");
+}
+
+function initViewToggle() {
+  const toggle = document.querySelector("#viewModeToggle");
+  applyViewMode(getPreferredViewMode());
+  if (!toggle) return;
+
+  toggle.addEventListener("click", () => {
+    const nextMode = document.documentElement.dataset.view === "cards" ? "list" : "cards";
+    safeSetStorage(viewStorageKey, nextMode);
+    applyViewMode(nextMode);
+  });
+}
+
 async function init() {
   initThemeToggle();
+  initViewToggle();
   const plan = await loadPlan();
   renderHero(plan.site);
   renderSchedule(plan);

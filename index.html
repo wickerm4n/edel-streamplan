@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="de" data-theme="light">
+<html lang="de" data-theme="light" data-view="list">
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#eef5ea" />
   <title>Edelweisschen · Streamplan</title>
-  <link rel="stylesheet" href="./css/styles.css?v=20260706b" />
+  <link rel="stylesheet" href="./css/styles.css?v=20260706c" />
 </head>
 <body>
   <div class="page">
@@ -34,6 +34,14 @@
       <p class="brand-kicker" id="heroEyebrow">Edelweisschen</p>
       <h1 id="page-title">Streamplan</h1>
       <p class="week-pill" id="weekRange"><span>06.07.2026 bis 12.07.2026</span></p>
+
+      <div class="view-toggle" aria-label="Ansicht des Streamplans umschalten">
+        <span class="view-toggle__label is-active" id="viewListLabel">Liste</span>
+        <button class="view-toggle__switch" id="viewModeToggle" type="button" aria-label="Cards-Ansicht aktivieren" aria-pressed="false">
+          <span class="view-toggle__knob" aria-hidden="true"></span>
+        </button>
+        <span class="view-toggle__label" id="viewCardsLabel">Cards</span>
+      </div>
     </header>
 
     <main class="schedule" id="scheduleList" aria-labelledby="page-title">
@@ -43,6 +51,6 @@
     <footer class="footer" id="socialLinks"></footer>
   </div>
 
-  <script src="./js/app.js?v=20260706b" defer></script>
+  <script src="./js/app.js?v=20260706c" defer></script>
 </body>
 </html>
