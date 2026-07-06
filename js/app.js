@@ -5,6 +5,12 @@ const DEFAULT_PLAN = {
     "eyebrow": "Edelweisschen",
     "weekLabel": "06.07.2026 bis 12.07.2026",
     "emptyText": "TBA – to be announced",
+    "streamStatus": {
+      "status": "offline",
+      "label": "Livestream",
+      "onlineText": "gerade live",
+      "offlineText": "gerade offline"
+    },
     "socialLinks": [
       {
         "label": "Twitch",
@@ -157,6 +163,19 @@ function normalizeText(value, fallback = "") {
   return value === undefined || value === null ? fallback : String(value);
 }
 
+function normalizeStreamStatus(value) {
+  const source = value && typeof value === "object" ? value : {};
+  const rawStatus = normalizeText(source.status, DEFAULT_PLAN.site.streamStatus.status).trim().toLowerCase();
+  const status = rawStatus === "online" ? "online" : "offline";
+
+  return {
+    status,
+    label: normalizeText(source.label, DEFAULT_PLAN.site.streamStatus.label),
+    onlineText: normalizeText(source.onlineText, DEFAULT_PLAN.site.streamStatus.onlineText),
+    offlineText: normalizeText(source.offlineText, DEFAULT_PLAN.site.streamStatus.offlineText)
+  };
+}
+
 function normalizePlan(plan) {
   const safe = plan && typeof plan === "object" ? plan : {};
   const site = {
@@ -170,6 +189,8 @@ function normalizePlan(plan) {
         url: normalizeText(link?.url)
       }))
     : clone(DEFAULT_PLAN.site.socialLinks);
+
+  site.streamStatus = normalizeStreamStatus(site.streamStatus);
 
   const sourceSchedule = Array.isArray(safe.schedule) ? safe.schedule : DEFAULT_PLAN.schedule;
   const byDay = new Map(sourceSchedule.map((day) => [day?.day, day]));
@@ -347,8 +368,22 @@ function renderHero(site) {
   document.title = `${site.brand || "Edelweisschen"} · ${site.title || "Streamplan"}`;
 }
 
+function renderStreamStatus(site) {
+  const statusElement = document.querySelector("#streamStatus");
+  const statusText = document.querySelector("#streamStatusText");
+  if (!statusElement || !statusText) return;
+
+  const status = normalizeStreamStatus(site.streamStatus);
+  const isOnline = status.status === "online";
+  statusElement.hidden = false;
+  statusElement.dataset.status = status.status;
+  statusText.textContent = `${status.label}: ${isOnline ? status.onlineText : status.offlineText}`;
+  statusElement.setAttribute("aria-label", statusText.textContent);
+}
+
 function renderSocialLinks(site) {
   const footer = document.querySelector("#socialLinks");
+  const footerWrap = document.querySelector(".footer");
   if (!footer) return;
 
   footer.replaceChildren();
@@ -362,6 +397,8 @@ function renderSocialLinks(site) {
     anchor.rel = "noopener noreferrer";
     footer.append(anchor);
   });
+
+  if (footerWrap) footerWrap.hidden = footer.children.length === 0;
 }
 
 function isTbaValue(value) {
@@ -536,6 +573,7 @@ async function init() {
   initViewToggle();
   const plan = await loadPlan();
   renderHero(plan.site);
+  renderStreamStatus(plan.site);
   renderSchedule(plan);
   renderSocialLinks(plan.site);
 }

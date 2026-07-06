@@ -6,14 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#eef5ea" />
   <title>Edelweisschen · Streamplan</title>
-  <link rel="stylesheet" href="./css/styles.css?v=20260706d" />
+  <link rel="stylesheet" href="./css/styles.css?v=20260706e" />
 </head>
 <body>
   <div class="page">
     <header class="hero" aria-labelledby="page-title">
       <div class="top-controls" aria-label="Darstellung der Seite">
         <div class="switch-control switch-control--view" aria-label="Streamplan-Ansicht wählen">
-          <span class="switch-control__title">Plan</span>
+          <span class="switch-control__title">Ansicht</span>
           <span class="switch-control__choice is-active" id="viewListLabel">Liste</span>
           <button class="switch-control__switch view-toggle__switch" id="viewModeToggle" type="button" aria-label="Kachelansicht aktivieren" aria-pressed="false">
             <span class="switch-control__knob view-toggle__knob" aria-hidden="true"></span>
@@ -22,7 +22,7 @@
         </div>
 
         <div class="switch-control switch-control--theme" aria-label="Design wählen">
-          <span class="switch-control__title">Design</span>
+          <span class="switch-control__title">Farben</span>
           <span class="switch-control__choice is-active" id="themeLightLabel">Hell</span>
           <button class="switch-control__switch theme-toggle" id="themeToggle" type="button" aria-label="Dunkles Design aktivieren" aria-pressed="false">
             <span class="switch-control__knob theme-toggle__knob" aria-hidden="true"></span>
@@ -49,6 +49,10 @@
       <p class="brand-kicker" id="heroEyebrow">Edelweisschen</p>
       <h1 id="page-title">Streamplan</h1>
       <p class="week-pill" id="weekRange"><span>06.07.2026 bis 12.07.2026</span></p>
+      <p class="stream-status" id="streamStatus" data-status="offline" aria-live="polite">
+        <span class="stream-status__dot" aria-hidden="true"></span>
+        <span class="stream-status__text" id="streamStatusText">Livestream: gerade offline</span>
+      </p>
 
     </header>
 
@@ -57,11 +61,28 @@
     </main>
 
     <footer class="footer" aria-label="Öffentliche Links">
-      <span class="footer__label">Online</span>
+      <div class="footer-divider" aria-hidden="true">
+        <span></span>
+        <svg class="edelweiss footer-flower" viewBox="0 0 64 64" focusable="false" xmlns="http://www.w3.org/2000/svg">
+          <path class="edelweiss-leaf" d="M31.5 39.5c-6.4 4-14.1 5.2-21.4 2.8 3.6 6.3 9.6 10.9 17.2 12.9 1.4-5.6 2.8-10.7 4.2-15.7Zm2.2.1c6.1 4.2 13.8 5.9 21.2 3.8-4 6-10.4 10.4-18 12-1-5.7-2.1-10.9-3.2-15.8Z" />
+          <g class="edelweiss-petals">
+            <path d="M32 5.5c4.4 7.7 4.8 15 0 21.8-4.8-6.8-4.4-14.1 0-21.8Z" />
+            <path d="M51.9 12.1c-1 8.7-5.1 14.8-12.4 17.5.9-8.2 5.2-14 12.4-17.5Z" />
+            <path d="M60.5 32.9c-7 5-14.1 6-21.2 2.6 6.1-5.2 13.1-6 21.2-2.6Z" />
+            <path d="M49.4 56.1c-8.3-2.1-13.6-6.8-15.6-14.4 7.8 1.9 13 6.8 15.6 14.4Z" />
+            <path d="M14.6 56.1c2.7-7.6 7.8-12.5 15.6-14.4-2 7.6-7.3 12.3-15.6 14.4Z" />
+            <path d="M3.5 32.9c8.1-3.4 15.1-2.6 21.2 2.6-7.1 3.4-14.2 2.4-21.2-2.6Z" />
+            <path d="M12.1 12.1c7.2 3.5 11.5 9.3 12.4 17.5-7.3-2.7-11.4-8.8-12.4-17.5Z" />
+          </g>
+          <circle class="edelweiss-center" cx="32" cy="33" r="9.2" />
+          <circle class="edelweiss-center-dark" cx="32" cy="33" r="4.7" />
+        </svg>
+        <span></span>
+      </div>
       <nav class="footer__links" id="socialLinks"></nav>
     </footer>
   </div>
 
-  <script src="./js/app.js?v=20260706d" defer></script>
+  <script src="./js/app.js?v=20260706e" defer></script>
 </body>
 </html>
