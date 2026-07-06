@@ -377,8 +377,10 @@ function renderStreamStatus(site) {
   const isOnline = status.status === "online";
   statusElement.hidden = false;
   statusElement.dataset.status = status.status;
-  statusText.textContent = `${status.label}: ${isOnline ? status.onlineText : status.offlineText}`;
-  statusElement.setAttribute("aria-label", statusText.textContent);
+  const statusLabel = isOnline ? "Edelweisschen ist live" : "Edelweisschen ist offline";
+  statusText.textContent = statusLabel;
+  statusElement.setAttribute("aria-label", `${status.label}: ${isOnline ? status.onlineText : status.offlineText}`);
+  statusElement.title = `${status.label}: ${isOnline ? status.onlineText : status.offlineText}`;
 }
 
 function renderSocialLinks(site) {

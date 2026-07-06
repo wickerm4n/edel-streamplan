@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#eef5ea" />
   <title>Edelweisschen · Streamplan</title>
-  <link rel="stylesheet" href="./css/styles.css?v=20260706e" />
+  <link rel="stylesheet" href="./css/styles.css?v=20260706f" />
 </head>
 <body>
   <div class="page">
@@ -49,12 +49,15 @@
       <p class="brand-kicker" id="heroEyebrow">Edelweisschen</p>
       <h1 id="page-title">Streamplan</h1>
       <p class="week-pill" id="weekRange"><span>06.07.2026 bis 12.07.2026</span></p>
-      <p class="stream-status" id="streamStatus" data-status="offline" aria-live="polite">
-        <span class="stream-status__dot" aria-hidden="true"></span>
-        <span class="stream-status__text" id="streamStatusText">Livestream: gerade offline</span>
-      </p>
 
     </header>
+
+    <div class="schedule-meta" aria-label="Aktueller Livestream-Status">
+      <p class="stream-status" id="streamStatus" data-status="offline" aria-live="polite">
+        <span class="stream-status__dot" aria-hidden="true"></span>
+        <span class="stream-status__text" id="streamStatusText">Edelweisschen ist offline</span>
+      </p>
+    </div>
 
     <main class="schedule" id="scheduleList" aria-labelledby="page-title">
       <p class="empty-day">Streamplan wird geladen.</p>
@@ -83,6 +86,6 @@
     </footer>
   </div>
 
-  <script src="./js/app.js?v=20260706e" defer></script>
+  <script src="./js/app.js?v=20260706f" defer></script>
 </body>
 </html>
