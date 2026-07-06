@@ -5,12 +5,6 @@ const DEFAULT_PLAN = {
     "eyebrow": "Edelweisschen",
     "weekLabel": "06.07.2026 bis 12.07.2026",
     "emptyText": "TBA – to be announced",
-    "streamStatus": {
-      "status": "offline",
-      "label": "Livestream",
-      "onlineText": "gerade live",
-      "offlineText": "gerade offline"
-    },
     "socialLinks": [
       {
         "label": "Twitch",
@@ -122,7 +116,24 @@ const dayOrder = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Sa
 const themeStorageKey = "edelweisschen-streamplan-theme";
 const viewStorageKey = "edelweisschen-streamplan-view";
 const remoteRefreshMs = 60000;
+const liveStatusRefreshMs = 60000;
+const liveStatusTimeoutMs = 8000;
+const liveStatusConfig = {
+  channel: "edelweisschen",
+  url: "https://www.twitch.tv/edelweisschen",
+  endpoint: "https://decapi.me/twitch/uptime/edelweisschen?offline_msg=offline"
+};
+const fallbackStreamStatus = {
+  status: "checking",
+  label: "Livestream",
+  onlineText: "gerade live",
+  offlineText: "gerade offline",
+  checkingText: "Status wird geprüft"
+};
 let remoteRefreshTimer = null;
+let liveStatusTimer = null;
+let activePlan = null;
+let currentStreamStatus = { ...fallbackStreamStatus };
 const SVG_NS = "http://www.w3.org/2000/svg";
 const edelweissPetals = [
   "M32 5.5c4.4 7.7 4.8 15 0 21.8-4.8-6.8-4.4-14.1 0-21.8Z",
@@ -167,14 +178,15 @@ function normalizeText(value, fallback = "") {
 
 function normalizeStreamStatus(value) {
   const source = value && typeof value === "object" ? value : {};
-  const rawStatus = normalizeText(source.status, DEFAULT_PLAN.site.streamStatus.status).trim().toLowerCase();
-  const status = rawStatus === "online" ? "online" : "offline";
+  const rawStatus = normalizeText(source.status, fallbackStreamStatus.status).trim().toLowerCase();
+  const status = rawStatus === "online" ? "online" : rawStatus === "offline" ? "offline" : "checking";
 
   return {
     status,
-    label: normalizeText(source.label, DEFAULT_PLAN.site.streamStatus.label),
-    onlineText: normalizeText(source.onlineText, DEFAULT_PLAN.site.streamStatus.onlineText),
-    offlineText: normalizeText(source.offlineText, DEFAULT_PLAN.site.streamStatus.offlineText)
+    label: normalizeText(source.label, fallbackStreamStatus.label),
+    onlineText: normalizeText(source.onlineText, fallbackStreamStatus.onlineText),
+    offlineText: normalizeText(source.offlineText, fallbackStreamStatus.offlineText),
+    checkingText: normalizeText(source.checkingText, fallbackStreamStatus.checkingText)
   };
 }
 
@@ -192,7 +204,7 @@ function normalizePlan(plan) {
       }))
     : clone(DEFAULT_PLAN.site.socialLinks);
 
-  site.streamStatus = normalizeStreamStatus(site.streamStatus);
+  delete site.streamStatus;
 
   const sourceSchedule = Array.isArray(safe.schedule) ? safe.schedule : DEFAULT_PLAN.schedule;
   const byDay = new Map(sourceSchedule.map((day) => [day?.day, day]));
@@ -379,19 +391,98 @@ function renderHero(site) {
   document.title = `${site.brand || "Edelweisschen"} · ${site.title || "Streamplan"}`;
 }
 
-function renderStreamStatus(site) {
+function renderStreamStatus(statusSource = currentStreamStatus) {
   const statusElement = document.querySelector("#streamStatus");
   const statusText = document.querySelector("#streamStatusText");
   if (!statusElement || !statusText) return;
 
-  const status = normalizeStreamStatus(site.streamStatus);
+  const status = normalizeStreamStatus(statusSource);
   const isOnline = status.status === "online";
+  const isChecking = status.status === "checking";
   statusElement.hidden = false;
   statusElement.dataset.status = status.status;
-  const statusLabel = isOnline ? "Edelweisschen ist live" : "Edelweisschen ist offline";
+
+  let statusLabel = "Edelweisschen ist offline";
+  if (isOnline) statusLabel = "Edelweisschen ist live";
+  else if (isChecking) statusLabel = "Status wird geprüft";
+
   statusText.textContent = statusLabel;
-  statusElement.setAttribute("aria-label", `${status.label}: ${isOnline ? status.onlineText : status.offlineText}`);
-  statusElement.title = `${status.label}: ${isOnline ? status.onlineText : status.offlineText}`;
+  const description = isOnline ? status.onlineText : isChecking ? status.checkingText : status.offlineText;
+  statusElement.setAttribute("aria-label", `${status.label}: ${description}`);
+  statusElement.title = `${status.label}: ${description}`;
+}
+
+function applyLiveStatus(statusSource) {
+  const nextStatus = normalizeStreamStatus(statusSource);
+  const previousStatus = currentStreamStatus.status;
+  currentStreamStatus = nextStatus;
+  renderStreamStatus(currentStreamStatus);
+
+  if (activePlan && previousStatus !== nextStatus.status) {
+    renderSchedule(activePlan);
+  }
+}
+
+function parseDecapiUptimeStatus(text) {
+  const normalized = String(text || "").trim().toLowerCase();
+  if (!normalized) return { status: "checking", checkingText: "Status konnte nicht geprüft werden" };
+
+  const offlineMarkers = [
+    "offline",
+    "not live",
+    "not streaming",
+    "currently not streaming",
+    "does not exist",
+    "not found",
+    "error"
+  ];
+
+  if (offlineMarkers.some((marker) => normalized.includes(marker))) {
+    return { status: "offline", offlineText: "gerade offline" };
+  }
+
+  return { status: "online", onlineText: "gerade live" };
+}
+
+async function fetchLiveStatus() {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), liveStatusTimeoutMs);
+
+  try {
+    const url = `${liveStatusConfig.endpoint}&_=${Date.now()}`;
+    const response = await fetch(url, {
+      cache: "no-store",
+      signal: controller.signal
+    });
+
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const text = await response.text();
+    return parseDecapiUptimeStatus(text);
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+async function refreshLiveStatus() {
+  try {
+    const status = await fetchLiveStatus();
+    applyLiveStatus(status);
+  } catch (error) {
+    console.warn("Livestream-Status konnte nicht automatisch geprüft werden.", error);
+    if (currentStreamStatus.status === "checking") {
+      applyLiveStatus({ status: "offline", offlineText: "Status derzeit nicht erreichbar" });
+    } else {
+      renderStreamStatus(currentStreamStatus);
+    }
+  }
+}
+
+function initLiveStatusRefresh() {
+  applyLiveStatus({ status: "checking" });
+  refreshLiveStatus();
+
+  if (liveStatusTimer) window.clearInterval(liveStatusTimer);
+  liveStatusTimer = window.setInterval(refreshLiveStatus, liveStatusRefreshMs);
 }
 
 function renderSocialLinks(site) {
@@ -417,7 +508,7 @@ function renderSocialLinks(site) {
 function getTwitchUrl(site) {
   const links = Array.isArray(site?.socialLinks) ? site.socialLinks : [];
   const twitchLink = links.find((link) => /twitch/i.test(`${link?.label || ""} ${link?.url || ""}`));
-  return getSafeWebUrl(twitchLink?.url) || "https://www.twitch.tv/edelweisschen";
+  return getSafeWebUrl(twitchLink?.url) || liveStatusConfig.url;
 }
 
 function parseDateLabel(value) {
@@ -559,7 +650,7 @@ function renderSchedule(plan) {
   const scheduleList = document.querySelector("#scheduleList");
   if (!scheduleList) return;
 
-  const status = normalizeStreamStatus(plan.site.streamStatus);
+  const status = normalizeStreamStatus(currentStreamStatus);
   const liveUrl = status.status === "online" ? getTwitchUrl(plan.site) : "";
 
   scheduleList.replaceChildren();
@@ -636,8 +727,9 @@ function initViewToggle() {
 }
 
 function renderPlan(plan) {
+  activePlan = plan;
   renderHero(plan.site);
-  renderStreamStatus(plan.site);
+  renderStreamStatus(currentStreamStatus);
   renderSchedule(plan);
   renderSocialLinks(plan.site);
 }
@@ -660,6 +752,7 @@ async function init() {
   initViewToggle();
   const plan = await loadPlan();
   renderPlan(plan);
+  initLiveStatusRefresh();
   initRemoteRefresh();
 }
 

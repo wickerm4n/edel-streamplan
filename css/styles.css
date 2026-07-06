@@ -1024,6 +1024,21 @@ html[data-theme="dark"] .stream-status {
   color: var(--muted);
 }
 
+.stream-status[data-status="checking"] .stream-status__dot {
+  background: #b4bba9;
+  box-shadow: 0 0 0 3px rgba(180, 187, 169, 0.14);
+  animation: statusChecking 1.25s ease-in-out infinite alternate;
+}
+
+.stream-status[data-status="checking"] .stream-status__text {
+  color: var(--soft);
+}
+
+@keyframes statusChecking {
+  from { opacity: 0.45; transform: scale(0.88); }
+  to { opacity: 1; transform: scale(1); }
+}
+
 @media (min-width: 761px) {
   .hero {
     padding-top: 76px;
